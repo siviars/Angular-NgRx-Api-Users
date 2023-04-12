@@ -1,0 +1,78 @@
+<table class="MenuTable">
+  <tr>
+    <td>Name</td>
+    <td><input #name type="text" id="name" name="name"></td>
+  </tr>
+  <tr>
+    <td>Birth day</td>
+    <td><input #birth type="date" id="birth" name="birth"></td>
+  </tr>
+  <tr>
+    <td>Email</td>
+    <td><input #email type="text" id="email" name="email"></td>
+  </tr>
+  <tr>
+    <td>Gender</td>
+    <td>
+      <select #gender name="gender" id="gender">
+        <option value="male">male</option>
+        <option value="female">female</option>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td>Status</td>
+    <td>
+      <select #status name="status" id="status">
+        <option value="active">active</option>
+        <option value="inactive">inactive</option>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td>Comment</td>
+    <td>
+      <textarea #comment id="comment" name="comment" rows="4" cols="50">Leave a comment...</textarea>
+    </td>
+  </tr>
+
+
+</table><br>
+
+<button #add
+  (click)="addUser(name.value, birth.value, email.value, gender.value, status.value, comment.value)">Add</button>
+<button #update
+  (click)="updateUser(updateId, name.value, birth.value, email.value, gender.value, status.value, comment.value)"
+  disabled>Update</button>
+<button #cancel (click)="cancelFields()" disabled>Cancel</button><br><br>
+
+<div *ngIf="isLoading$ | async">Loading...</div>
+
+<div *ngIf="error$|async as error">{{error}}</div>
+
+<table class="UserTable">
+  <tr>
+    <th>Id</th>
+    <th>Name</th>
+    <th>Birth date</th>
+    <th>Email</th>
+    <th>Gender</th>
+    <th>Status</th>
+    <th>Comments</th>
+    <th>Update time</th>
+    <th>Actions</th>
+  </tr>
+  <tr *ngFor="let obj of users$ |async">
+    <td>{{obj.id}}</td>
+    <td>{{obj.name}}</td>
+    <td>{{obj.birth | date :'shortDate'}}</td>
+    <td>{{obj.email}}</td>
+    <td>{{obj.gender}}</td>
+    <td>{{obj.status}}</td>
+    <td>{{obj.comment}}</td>
+    <td>{{obj.update| date:'mediumTime'}}</td>
+    <td><button (click)="removeUser(obj.id)">Remove</button>
+      <button (click)="readUser(obj.id)">Read</button>
+    </td>
+  </tr>
+</table>
